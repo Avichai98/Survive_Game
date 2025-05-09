@@ -3,7 +3,6 @@ package com.app.survivegame;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -12,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
+
 import javax.net.ssl.HttpsURLConnection;
 
 public class MenuActivity extends AppCompatActivity {
@@ -22,22 +23,18 @@ public class MenuActivity extends AppCompatActivity {
     /* access modifiers changed from: protected */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_menu);
+        setContentView(R.layout.activity_menu);
         findViews();
         initViews();
     }
 
     private void initViews() {
-        this.menu_BTN_start.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                MenuActivity.this.makeServerCall();
-            }
-        });
+        this.menu_BTN_start.setOnClickListener(v -> MenuActivity.this.makeServerCall());
     }
 
     private void findViews() {
-        this.menu_BTN_start = (MaterialButton) findViewById(R.id.menu_BTN_start);
-        this.menu_EDT_id = (TextInputEditText) findViewById(R.id.menu_EDT_id);
+        this.menu_BTN_start = findViewById(R.id.menu_BTN_start);
+        this.menu_EDT_id = findViewById(R.id.menu_EDT_id);
     }
 
     /* access modifiers changed from: private */
@@ -48,7 +45,9 @@ public class MenuActivity extends AppCompatActivity {
                 Log.d("pttt", data);
                 if (data != null) {
                     MenuActivity activity_Menu = MenuActivity.this;
-                    activity_Menu.startGame(activity_Menu.menu_EDT_id.getText().toString(), data);
+                    activity_Menu.startGame(
+                            Objects.requireNonNull(activity_Menu.menu_EDT_id.getText()).toString(),
+                            data);
                 }
             }
         }.start();
@@ -56,7 +55,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /* access modifiers changed from: private */
     public void startGame(String id, String data) {
-        String state = data.split(",")[Integer.valueOf(String.valueOf(id.charAt(7))).intValue()];
+        String state = data.split(",")[Integer.parseInt(String.valueOf(id.charAt(7)))];
         Intent intent = new Intent(getBaseContext(), GameActivity.class);
         intent.putExtra(GameActivity.EXTRA_ID, id);
         intent.putExtra(GameActivity.EXTRA_STATE, state);
@@ -85,16 +84,16 @@ public class MenuActivity extends AppCompatActivity {
                 try {
                     con2.disconnect();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    Log.d("pttt", ex.toString());
                 }
             }
         } catch (MalformedURLException ex2) {
-            ex2.printStackTrace();
+           Log.d("pttt", ex2.toString());
             if (con != null) {
                 con.disconnect();
             }
         } catch (IOException ex3) {
-            ex3.printStackTrace();
+            Log.d("pttt", ex3.toString());
             if (con != null) {
                 con.disconnect();
             }
@@ -103,7 +102,7 @@ public class MenuActivity extends AppCompatActivity {
                 try {
                     con.disconnect();
                 } catch (Exception ex4) {
-                    ex4.printStackTrace();
+                   Log.d("pttt", ex4.toString());
                 }
             }
             throw th;

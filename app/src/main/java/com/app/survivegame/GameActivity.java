@@ -1,9 +1,9 @@
 package com.app.survivegame;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GameActivity extends AppCompatActivity {
@@ -17,8 +17,9 @@ public class GameActivity extends AppCompatActivity {
     /* access modifiers changed from: protected */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_game);
+        setContentView(R.layout.activity_game);
         String id = getIntent().getStringExtra(EXTRA_ID);
+        assert id != null;
         if (id.length() == this.steps.length) {
             int i = 0;
             while (true) {
@@ -26,7 +27,7 @@ public class GameActivity extends AppCompatActivity {
                 if (i >= iArr.length) {
                     break;
                 }
-                iArr[i] = Integer.valueOf(String.valueOf(id.charAt(i))).intValue() % 4;
+                iArr[i] = Integer.parseInt(String.valueOf(id.charAt(i))) % 4;
                 i++;
             }
         }
@@ -62,11 +63,7 @@ public class GameActivity extends AppCompatActivity {
             ImageButton[] imageButtonArr = this.arrows;
             if (i < imageButtonArr.length) {
                 final int finalI = i;
-                imageButtonArr[i].setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        GameActivity.this.arrowClicked(finalI);
-                    }
-                });
+                imageButtonArr[i].setOnClickListener(v -> GameActivity.this.arrowClicked(finalI));
                 i++;
             } else {
                 return;
@@ -75,6 +72,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        this.arrows = new ImageButton[]{(ImageButton) findViewById(R.id.game_BTN_left), (ImageButton) findViewById(R.id.game_BTN_right), (ImageButton) findViewById(R.id.game_BTN_up), (ImageButton) findViewById(R.id.game_BTN_down)};
+        this.arrows = new ImageButton[]{findViewById(R.id.game_BTN_left),
+                findViewById(R.id.game_BTN_right), findViewById(R.id.game_BTN_up),
+                findViewById(R.id.game_BTN_down)};
     }
 }
