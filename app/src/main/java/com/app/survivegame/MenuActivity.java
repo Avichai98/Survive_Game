@@ -3,6 +3,8 @@ package com.app.survivegame;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -43,11 +45,17 @@ public class MenuActivity extends AppCompatActivity {
             public void run() {
                 String data = MenuActivity.getJSON(MenuActivity.this.getString(R.string.url));
                 Log.d("pttt", data);
-                if (data != null) {
+                if (!data.trim().isEmpty()) {
                     MenuActivity activity_Menu = MenuActivity.this;
                     activity_Menu.startGame(
                             Objects.requireNonNull(activity_Menu.menu_EDT_id.getText()).toString(),
                             data);
+                }
+                else {
+                    Log.e("pttt", "Empty or invalid response from server");
+                    runOnUiThread(() ->
+                            Toast.makeText(MenuActivity.this, "Server error. Please try again later.", Toast.LENGTH_SHORT).show()
+                    );
                 }
             }
         }.start();
@@ -55,6 +63,18 @@ public class MenuActivity extends AppCompatActivity {
 
     /* access modifiers changed from: private */
     public void startGame(String id, String data) {
+        if (id.length() == 8){
+            runOnUiThread(() ->
+                    Toast.makeText(this, "Your ID must be 8 digits. Please add a leading zero if needed.", Toast.LENGTH_SHORT).show()
+            );
+            return;
+        }
+        if (id.length() != 9) {
+            runOnUiThread(() ->
+                Toast.makeText(this, "Please enter a valid ID", Toast.LENGTH_SHORT).show()
+            );
+            return;
+        }
         String state = data.split(",")[Integer.parseInt(String.valueOf(id.charAt(7)))];
         Intent intent = new Intent(getBaseContext(), GameActivity.class);
         intent.putExtra(GameActivity.EXTRA_ID, id);
