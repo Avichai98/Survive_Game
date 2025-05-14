@@ -65,14 +65,15 @@ Note: Only 9-digit IDs are accepted. IDs with 8 digits will prompt a message ask
 
 After entering a valid 9-digit ID and following the game's instructions, I reached the final toast message with the name of the city.
 
-**🖼️ Screenshot:**  
-(Place your screenshot here showing the city name toast message)
+**🖼️ Screenshot:**
+
+<img src="survived.jpg" alt="Home Screen" width="300">
 
 ## 🙌 Conclusion
 
 This project was an interesting challenge in reverse engineering, debugging, and rebuilding Android apps. It required understanding both Java and Android internals, identifying hidden bugs, and thinking "outside the box" as instructed.
 
-# 📩 Contact
+## 📩 Contact
 
 If you have any questions, suggestions, or want to contribute, feel free to reach out.
 
